@@ -124,11 +124,11 @@ A settings put global animator_duration_scale 0.5
 
 ## 7. Custom launcher: M&M Home (`launcher/`)
 
-A home screen themed on Michał & Marta: the photo as a slowly drifting background, an M&M monogram, and a palette sampled from the photo (beanie red `#D7263D`, teal, magenta).
+A home screen themed on the photo as a slowly drifting background, an M&M monogram, and a palette sampled from the photo (beanie red `#D7263D`, teal, magenta).
 
 | Feature | How |
 |---|---|
-| Boot splash | First launch after each boot (`Settings.Global.BOOT_COUNT` differs from the stored value) shows a full-screen photo with "Michał & Marta" for 3 s, then opens the primary input. **Any key during the splash cancels the auto-switch.** |
+| Boot splash | First launch after each boot (`Settings.Global.BOOT_COUNT` differs from the stored value) shows a full-screen photo with the launcher title for 3 s, then opens the primary input. **Any key during the splash cancels the auto-switch.** |
 | Inputs row | `TvInputManager.getTvInputList()` passthrough inputs. HDMI-CEC devices (e.g. Apple TV) replace the port they sit behind and are sorted first. Opening one sends `ACTION_VIEW` on `TvContract.buildChannelUriForPassthroughInput(id)`, which Sony's `tvx` handles. |
 | Settings row | Picture / Sound / Screen use Sony's quick panels (`com.sony.dtv.configsettings/.{Picture,Sound,Screen}SettingActivity`). Network = `ACTION_WIFI_SETTINGS`, All settings = `ACTION_SETTINGS`. Auto-start tile toggles the boot switch. |
 | Live background | `LiveBackgroundView`: the photo as an `ImageView` with property animators (zoom 1.08 to 1.16, pan ±28 dp, 41–57 s cycles). The bitmap is never redrawn, only recomposited. Decoded as RGB_565. Paused when the launcher isn't visible. |
