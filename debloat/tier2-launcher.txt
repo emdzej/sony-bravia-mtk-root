@@ -1,0 +1,4 @@
+# Tier 2 — stock launcher stack, after <launcher-pkg> became HOME (2026-11-18).
+# com.google.android.tvlauncher itself is *disabled* (pm disable-user), not uninstalled — see GUIDE.md §7.
+com.google.android.tvrecommendations
+com.sony.dtv.tvlaunchercustomizer

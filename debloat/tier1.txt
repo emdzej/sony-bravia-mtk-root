@@ -1,0 +1,59 @@
+# Tier 1 — user-facing apps, trackers, casting, assistant. TV is used only as Apple TV display (HDMI3 via ARC soundbar).
+# Tracking / telemetry
+tv.samba.ssm
+com.google.android.feedback
+com.google.android.tv.bugreportsender
+# Streaming apps
+com.netflix.ninja
+com.google.android.youtube.tv
+com.amazon.aiv.eu
+com.amazon.amazonvideo.livingroom
+com.google.android.videos
+com.google.android.music
+com.google.android.play.games
+com.android.vending
+# Assistant / voice
+com.google.android.katniss
+com.google.android.speech.pumpkin
+com.sony.dtv.scrums.action
+com.sony.dtv.tvdotactiondevicecontrol
+# Casting / mirroring / DLNA / DIAL
+com.google.android.apps.mediashell
+com.sony.dtv.dialservice
+screnmirroring.com
+com.sony.dtv.networkapp.wifidirect
+com.sony.huey.dlna.module
+com.sony.huey.dlna.renderersettings
+com.sonyericsson.dlna
+com.sonyericsson.dlna.dtcpplayer
+com.google.android.tv.remote.service
+com.google.android.sss
+com.google.android.sss.authbridge
+# Sony extras / promo
+com.sony.dtv.discovery
+com.sony.dtv.sonyselect
+com.sony.dtv.bravialifehack
+com.sony.dtv.demomode
+com.sony.dtv.demosupport
+com.sony.dtv.multiscreendemo
+com.sony.dtv.imanual
+com.sony.dtv.smarthelp
+com.sony.dtv.customersupport
+com.sony.dtv.youview
+com.youview.tv.servicehost
+com.sony.dtv.osat.album
+com.sony.dtv.osat.music
+com.sony.dtv.osat.video
+# Browsers
+com.opera.sdk.example
+com.vewd.core.integration.dia
+# Google misc
+com.google.android.backdrop
+com.google.android.tvtutorials
+com.google.android.inputmethod.japanese
+com.google.android.marvin.talkback
+com.google.android.syncadapters.calendar
+com.google.android.syncadapters.contacts
+com.android.printspooler
+# Crashed on boot after YouView removal (depends on com.sony.dtv.youview.provider)
+com.sony.dtv.seconddispsetting

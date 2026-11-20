@@ -1,0 +1,13 @@
+# build artifacts / private material (never publish)
+*.apk
+*.keystore
+*.jks
+*.so
+*.ko
+*.bin
+*.dex
+out/
+build/
+.gradle/
+local.properties
+state/
