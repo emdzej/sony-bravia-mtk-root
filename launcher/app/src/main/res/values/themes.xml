@@ -1,0 +1,18 @@
+<resources>
+    <style name="Theme.TvHome" parent="android:Theme.Material.NoActionBar.Fullscreen">
+        <item name="android:windowBackground">@android:color/black</item>
+        <item name="android:windowShowWallpaper">false</item>
+        <item name="android:windowAnimationStyle">@null</item>
+        <item name="android:colorAccent">#FFFFFFFF</item>
+    </style>
+
+    <style name="SectionHeader">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">#99FFFFFF</item>
+        <item name="android:letterSpacing">0.15</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:layout_marginTop">20dp</item>
+        <item name="android:layout_marginBottom">4dp</item>
+        <item name="android:layout_marginStart">8dp</item>
+    </style>
+</resources>

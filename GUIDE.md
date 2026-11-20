@@ -1,6 +1,6 @@
 # Sony Bravia KD-55XE9005 — Debloat & Custom Launcher Guide
 
-The TV is used **only as a display for an Apple TV**. Everything else (streaming apps, Assistant, casting, Sony promo apps, trackers) is removed. A custom launcher (input switcher + settings, "old dumb TV" style) was later built as a separate, private project.
+The TV is used **only as a display for an Apple TV**. Everything else (streaming apps, Assistant, casting, Sony promo apps, trackers) is removed. A custom launcher (input switcher + settings, "old dumb TV" style) will replace the Google TV launcher.
 
 ## 1. Device facts
 
@@ -122,9 +122,52 @@ A settings put global animator_duration_scale 0.5
 ```
 (Not applied yet. These shorten UI animations. Set to `1` to revert.)
 
+## 7. Custom launcher: M&M Home (`launcher/`)
+
+A home screen themed on Michał & Marta: the photo as a slowly drifting background, an M&M monogram, and a palette sampled from the photo (beanie red `#D7263D`, teal, magenta).
+
+| Feature | How |
+|---|---|
+| Boot splash | First launch after each boot (`Settings.Global.BOOT_COUNT` differs from the stored value) shows a full-screen photo with "Michał & Marta" for 3 s, then opens the primary input. **Any key during the splash cancels the auto-switch.** |
+| Inputs row | `TvInputManager.getTvInputList()` passthrough inputs. HDMI-CEC devices (e.g. Apple TV) replace the port they sit behind and are sorted first. Opening one sends `ACTION_VIEW` on `TvContract.buildChannelUriForPassthroughInput(id)`, which Sony's `tvx` handles. |
+| Settings row | Picture / Sound / Screen use Sony's quick panels (`com.sony.dtv.configsettings/.{Picture,Sound,Screen}SettingActivity`). Network = `ACTION_WIFI_SETTINGS`, All settings = `ACTION_SETTINGS`. Auto-start tile toggles the boot switch. |
+| Live background | `LiveBackgroundView`: the photo as an `ImageView` with property animators (zoom 1.08 to 1.16, pan ±28 dp, 41–57 s cycles). The bitmap is never redrawn, only recomposited. Decoded as RGB_565. Paused when the launcher isn't visible. |
+| Picture-frame mode | After 20 s with no key press, the UI fades out and only the photo shows. The first key only wakes the UI. |
+| Footprint | APK about 1 MB (mostly the photo). About 23 MB of RAM (stock launcher: 47–57 MB). 90th-percentile frame time 8 ms. |
+
+Note on resolution: the panel is 4K, but Android's UI plane on this model is 1920×1080 (`wm size`) and gets upscaled. HDMI video (the Apple TV) uses a separate hardware video plane at native 4K/HDR, so it isn't affected.
+
+### Build & install
+Requires JDK 21 (`brew install openjdk@21`, path set in `launcher/gradle.properties`) and the Android SDK at `~/Library/Android/sdk` (platform 36). Uses AGP 9.5.1, Gradle 9.7.1 wrapper, no AndroidX dependencies.
+
+```bash
+cd launcher
+./gradlew assembleRelease                                   # → app/build/outputs/apk/release/app-release.apk (signed with debug key)
+adb -s <TV-LAN-IP>:5555 install -r app/build/outputs/apk/release/app-release.apk
+A pm disable-user --user 0 com.google.android.tvlauncher    # makes M&M Home the only HOME app
+A cmd package resolve-activity --brief -a android.intent.action.MAIN -c android.intent.category.HOME   # → com.mjaskols.tvhome/.MainActivity
+```
+
+### Testing tricks
+```bash
+A pm clear com.mjaskols.tvhome && A am start -n com.mjaskols.tvhome/.MainActivity   # simulate first boot → splash → Apple TV
+A input keyevent KEYCODE_HOME                                                        # open launcher
+adb -s <TV-LAN-IP>:5555 exec-out screencap -p > shot.png                            # screenshot
+A dumpsys meminfo com.mjaskols.tvhome | grep TOTAL                                   # RAM
+A dumpsys gfxinfo com.mjaskols.tvhome | grep -E "Janky|90th"                         # frame times
+```
+
+### Changing the photo
+Replace `launcher/app/src/main/res/drawable-nodpi/mm_photo.jpg`. Downscale first: `sips -Z 1920 -s format jpeg -s formatOptions 82 in.jpg --out mm_photo.jpg`. Keep faces in the upper ~55% of a 16:9 centre-crop, because the tiles cover the bottom.
+
+### Roadmap
+- NVR camera tiles/fullscreen (RTSP via `MediaPlayer`/ExoPlayer; needs NVR brand and stream URLs)
+- Home Assistant panel (REST/WebSocket API + long-lived token)
+- More backgrounds (photo rotation)
+
 ## 7a. Boot animation & root
 
-The real boot animation is `/system/media/bootanimation.zip` on the read-only system partition. Android 8 only checks `/oem/media` and `/system/media` (not `/data/local`), and Sony's Pro/Hotel mode on this firmware has no startup-logo option. **Changing it requires root — which we now have (below), but only RAM-only page-cache root**: the console dies on reboot and re-applying it can't happen before the boot animation plays, so `/system/media/bootanimation.zip` remains unreachable without flash writes (playbook §1 forbids those). A custom launcher's splash screen (separate project) remains the way to do this. Root's practical use here: process control over app-spawned processes and deeper runtime inspection between reboots.
+The real boot animation is `/system/media/bootanimation.zip` on the read-only system partition. Android 8 only checks `/oem/media` and `/system/media` (not `/data/local`), and Sony's Pro/Hotel mode on this firmware has no startup-logo option. **Changing it requires root — which we now have (below), but only RAM-only page-cache root**: the console dies on reboot and re-applying it can't happen before the boot animation plays, so `/system/media/bootanimation.zip` remains unreachable without flash writes (playbook §1 forbids those). The launcher splash (§5) remains the way to do this. Root's practical use here: process control over app-spawned processes and deeper runtime inspection between reboots.
 
 ### Device security state (confirmed on-device 2026-11-18)
 
@@ -228,7 +271,7 @@ This is a future hardware project, documented here so the path is recorded. It s
 
 Counterintuitive but important: **taking Sony's official firmware updates works *against* rooting.** Each update *raises* the security patch level and closes exactly the old-kernel holes (like Bad Binder) that any software root would rely on. The current 2019-09 patch level is the *most* exploitable this TV will ever be — so **do not let it update** if you're serious about a future software root. (It also can't update in the normal sense: there are no newer XE9005 firmwares, and we can't build/sign our own.)
 
-Updating individual *userspace* components (apps) is fine and unrelated — that's what §4/§7 cover. It's the *system/kernel* image that you'd want frozen.
+Updating individual *userspace* components (apps, our launcher) is fine and unrelated — that's what §4/§7 cover. It's the *system/kernel* image that you'd want frozen.
 
 Keep the current firmware, keep network/auto-update off in TV settings, and keep an eye out for a published MT5891 serial/U-Boot writeup. A step-by-step legitimate attempt/customization playbook is in `root-research/root-playbook.md`. Sources collected in `root-research/` (XDA MediaTek-TV threads, mtkclient discussion, Project Zero Bad Binder RCA, Quarkslab mtk-su, Synacktiv U-Boot).
 
@@ -260,6 +303,6 @@ Full detail in `root-research/partition-layout.md` and `root-research/pkg-analys
 ./debloat/restore.sh debloat/tier2-launcher.txt
 ./debloat/restore.sh debloat/tier1.txt
 A pm enable com.google.android.tvlauncher
-A pm uninstall <launcher-pkg>
+A pm uninstall com.mjaskols.tvhome
 ```
 Last resort: a factory reset from TV Settings.

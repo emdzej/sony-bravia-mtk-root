@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/mm_ink">
+
+    <com.mjaskols.tvhome.LiveBackgroundView
+        android:id="@+id/background"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <!-- Everything that fades out in picture-frame mode. -->
+    <FrameLayout
+        android:id="@+id/chrome"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clipChildren="false">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:background="@drawable/scrim_top" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:layout_gravity="bottom"
+            android:background="@drawable/scrim_bottom" />
+
+        <!-- Top bar: monogram + names left, clock right. Sits over the beanies, not the faces. -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingStart="40dp"
+            android:paddingTop="24dp"
+            android:paddingEnd="40dp">
+
+            <TextView
+                android:layout_width="44dp"
+                android:layout_height="44dp"
+                android:background="@drawable/monogram_bg"
+                android:fontFamily="sans-serif-black"
+                android:gravity="center"
+                android:text="@string/monogram"
+                android:textColor="@color/mm_cream"
+                android:textSize="13sp" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:layout_weight="1"
+                android:fontFamily="sans-serif-light"
+                android:shadowColor="#CC000000"
+                android:shadowRadius="8"
+                android:text="@string/couple"
+                android:textColor="@color/mm_cream"
+                android:textSize="22sp" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="end"
+                android:orientation="vertical">
+
+                <TextClock
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-thin"
+                    android:format12Hour="HH:mm"
+                    android:format24Hour="HH:mm"
+                    android:includeFontPadding="false"
+                    android:shadowColor="#CC000000"
+                    android:shadowRadius="8"
+                    android:textColor="@color/mm_cream"
+                    android:textSize="44sp" />
+
+                <TextClock
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:format12Hour="EEEE, d MMMM"
+                    android:format24Hour="EEEE, d MMMM"
+                    android:shadowColor="#CC000000"
+                    android:shadowRadius="6"
+                    android:textColor="#E6F4EDE4"
+                    android:textSize="14sp" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- Bottom panel: inputs + settings, kept below the faces. -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:clipChildren="false"
+            android:clipToPadding="false"
+            android:orientation="vertical"
+            android:paddingStart="32dp"
+            android:paddingEnd="32dp"
+            android:paddingBottom="24dp">
+
+            <HorizontalScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clipChildren="false"
+                android:clipToPadding="false"
+                android:padding="8dp"
+                android:scrollbars="none">
+
+                <LinearLayout
+                    android:id="@+id/inputs_row"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:clipChildren="false"
+                    android:clipToPadding="false"
+                    android:orientation="horizontal" />
+            </HorizontalScrollView>
+
+            <HorizontalScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clipChildren="false"
+                android:clipToPadding="false"
+                android:padding="8dp"
+                android:scrollbars="none">
+
+                <LinearLayout
+                    android:id="@+id/settings_row"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:clipChildren="false"
+                    android:clipToPadding="false"
+                    android:orientation="horizontal" />
+            </HorizontalScrollView>
+        </LinearLayout>
+    </FrameLayout>
+
+    <!-- Boot splash: names over the photo, shown before auto-switching to the primary input. -->
+    <LinearLayout
+        android:id="@+id/splash"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/scrim_bottom"
+        android:gravity="bottom|center_horizontal"
+        android:orientation="vertical"
+        android:paddingBottom="72dp"
+        android:visibility="gone">
+
+        <TextView
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:background="@drawable/monogram_bg"
+            android:fontFamily="sans-serif-black"
+            android:gravity="center"
+            android:text="@string/monogram"
+            android:textColor="@color/mm_cream"
+            android:textSize="18sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:fontFamily="sans-serif-light"
+            android:shadowColor="#CC000000"
+            android:shadowRadius="10"
+            android:text="@string/couple"
+            android:textColor="@color/mm_cream"
+            android:textSize="48sp" />
+    </LinearLayout>
+</FrameLayout>

@@ -1,0 +1,7 @@
+<resources>
+    <dimen name="input_tile_width">176dp</dimen>
+    <dimen name="input_tile_height">92dp</dimen>
+    <dimen name="setting_tile_width">128dp</dimen>
+    <dimen name="setting_tile_height">72dp</dimen>
+    <dimen name="tile_gap">14dp</dimen>
+</resources>

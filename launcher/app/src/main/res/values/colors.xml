@@ -1,0 +1,8 @@
+<resources>
+    <!-- Palette sampled from the M&M photo: beanies, scarves, misty forest. -->
+    <color name="mm_red">#FFD7263D</color>
+    <color name="mm_teal">#FF4FB3AE</color>
+    <color name="mm_magenta">#FFA4246A</color>
+    <color name="mm_cream">#FFF4EDE4</color>
+    <color name="mm_ink">#FF0B0F14</color>
+</resources>

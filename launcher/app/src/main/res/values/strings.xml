@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_name">M&amp;M Home</string>
+    <string name="couple">Michał &amp; Marta</string>
+    <string name="monogram">M&amp;M</string>
+    <string name="section_inputs">Inputs</string>
+    <string name="section_settings">Settings</string>
+    <string name="no_inputs">No inputs found</string>
+    <string name="state_standby">Standby</string>
+    <string name="state_disconnected">Not connected</string>
+    <string name="via_cec">via %1$s</string>
+    <string name="tile_picture">Picture</string>
+    <string name="tile_sound">Sound</string>
+    <string name="tile_screen">Screen</string>
+    <string name="tile_network">Network</string>
+    <string name="tile_all_settings">All settings</string>
+    <string name="tile_autostart">Auto-start</string>
+    <string name="autostart_on">→ %1$s</string>
+    <string name="autostart_off">Off</string>
+    <string name="cannot_open">Cannot open %1$s</string>
+</resources>

@@ -53,6 +53,9 @@ root-research/
   x850d-tool/                COMPLETE toolchain deep-dive (exploit dev, SELinux surface, remap docs)
    tools/tv-root.sh          the one-command root tool (apply/revert/status/console)
    Sony-XBR-65X850D/         per-CVE reports, phase-by-phase exploit sources, vendor tool docs
+launcher/                    "M&M Home": the custom dumb-TV home screen (photo background,
+                             boot splash, input switcher). Ships a placeholder photo —
+                             drop in your own at launcher/app/src/main/res/drawable-nodpi/mm_photo.jpg
 ```
 
 ## Root capabilities & hard limits (SELinux Enforcing)
